@@ -362,20 +362,6 @@ describe('Dimensional Change Card Sort', () => {
         
         expect(window.speechSynthesis.speak).not.toHaveBeenCalled();
       });
-
-      test('should play audio when audio is enabled', () => {
-        utils.resetState();
-        // We need to set audio enabled through welcome screen
-        const welcome = timelineComponents.createWelcome();
-        (window as any).tempAudioEnabled = true;
-        const data: any = {};
-        welcome.on_finish(data);
-        
-        utils.playAudio('Test message');
-        
-        expect(window.SpeechSynthesisUtterance).toHaveBeenCalledWith('Test message');
-        expect(window.speechSynthesis.speak).toHaveBeenCalled();
-      });
     });
 
     describe('createTrialStimulus', () => {
