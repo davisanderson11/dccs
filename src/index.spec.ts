@@ -93,18 +93,19 @@ const mockJsPsych = {
   getCurrentTrial: jest.fn(() => ({ data: {} })),
   finishTrial: jest.fn(),
   data: {
-    get: jest.fn(() => ({
-      filter: jest.fn((criteria: any) => ({
+    get: jest.fn(() => {
+      // Create a reusable mock data collection factory
+      const createMockDataCollection = () => ({
         count: jest.fn(() => 5),
         select: jest.fn(() => ({
           mean: jest.fn(() => 2500),
           values: [2000, 2500, 3000]
         })),
-        filter: jest.fn((criteria2: any) => ({
-          count: jest.fn(() => 4)
-        }))
-      }))
-    }))
+        filter: jest.fn((criteria: any) => createMockDataCollection())
+      });
+      
+      return createMockDataCollection();
+    })
   }
 } as unknown as JsPsych;
 
@@ -698,8 +699,6 @@ describe('Dimensional Change Card Sort', () => {
     });
 
     test('should handle timeout prompt for test trials', () => {
-      jest.useFakeTimers();
-      
       const mockCard = {
         addEventListener: jest.fn()
       };
@@ -714,15 +713,18 @@ describe('Dimensional Change Card Sort', () => {
         correct: 0
       };
 
+      // Mock setTimeout to capture the timeout callback
+      const originalSetTimeout = global.setTimeout;
+      const mockSetTimeout = jest.fn();
+      global.setTimeout = mockSetTimeout;
+
       utils.setupTrial(mockJsPsych, trial, 'test', 1, 'color', false);
 
-      // Fast-forward time by 5 seconds
-      jest.advanceTimersByTime(5000);
+      // Should have called setTimeout with timeout prompt
+      expect(mockSetTimeout).toHaveBeenCalledWith(expect.any(Function), 5000);
 
-      // Should have called playAudio with prompt (through setTimeout)
-      expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 5000);
-
-      jest.useRealTimers();
+      // Restore setTimeout
+      global.setTimeout = originalSetTimeout;
     });
 
     test('should handle getCurrentTrial returning null', () => {
