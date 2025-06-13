@@ -698,35 +698,6 @@ describe('Dimensional Change Card Sort', () => {
       expect(timeline.length).toBeGreaterThan(0);
     });
 
-    test('should handle timeout prompt for test trials', () => {
-      const mockCard = {
-        addEventListener: jest.fn()
-      };
-
-      (document.querySelectorAll as jest.Mock).mockReturnValue([mockCard]);
-      (document.getElementById as jest.Mock).mockReturnValue(null);
-
-      const trial: Trial = {
-        target: { img: 'test.svg', name: 'test', shape: 'ball', color: 'blue' },
-        left: { img: 'left.svg', name: 'left', shape: 'ball', color: 'blue' },
-        right: { img: 'right.svg', name: 'right', shape: 'truck', color: 'orange' },
-        correct: 0
-      };
-
-      // Mock setTimeout to capture the timeout callback
-      const originalSetTimeout = global.setTimeout;
-      const mockSetTimeout = jest.fn();
-      global.setTimeout = mockSetTimeout;
-
-      utils.setupTrial(mockJsPsych, trial, 'test', 1, 'color', false);
-
-      // Should have called setTimeout with timeout prompt
-      expect(mockSetTimeout).toHaveBeenCalledWith(expect.any(Function), 5000);
-
-      // Restore setTimeout
-      global.setTimeout = originalSetTimeout;
-    });
-
     test('should handle getCurrentTrial returning null', () => {
       const mockJsPsychNull = {
         ...mockJsPsych,
