@@ -219,13 +219,13 @@ describe('Dimensional Change Card Sort', () => {
 
       test('should set audio state on finish', () => {
         const welcome = timelineComponents.createWelcome();
-        (window as any).tempAudioEnabled = true;
+        (window as any).tempaudio_enabled = true;
         
         const data: any = {};
         welcome.on_finish(data);
         
         expect(data.audio_enabled).toBe(true);
-        expect((window as any).tempAudioEnabled).toBeUndefined();
+        expect((window as any).tempaudio_enabled).toBeUndefined();
       });
     });
 
@@ -655,13 +655,13 @@ describe('Dimensional Change Card Sort', () => {
 
     test('should export GameState type', () => {
       const state: GameState = {
-        audioEnabled: true,
-        currentPhase: 'practice',
-        trialsCompleted: 5
+        audio_enabled: true,
+        current_phase: 'practice',
+        trials_completed: 5
       };
-      expect(state.audioEnabled).toBe(true);
-      expect(state.currentPhase).toBe('practice');
-      expect(state.trialsCompleted).toBe(5);
+      expect(state.audio_enabled).toBe(true);
+      expect(state.current_phase).toBe('practice');
+      expect(state.trials_completed).toBe(5);
     });
   });
 

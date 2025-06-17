@@ -33,9 +33,9 @@ interface TrialData {
 }
 
 interface GameState {
-    audioEnabled: boolean;
-    currentPhase: string;
-    trialsCompleted: number;
+    audio_enabled: boolean;
+    current_phase: string;
+    trials_completed: number;
 }
 
 /* Stimuli definitions */
@@ -92,22 +92,22 @@ const STIMULI = {
 
 /* Internal state */
 let state: GameState = {
-    audioEnabled: false,
-    currentPhase: '',
-    trialsCompleted: 0
+    audio_enabled: false,
+    current_phase: '',
+    trials_completed: 0
 };
 
 /* Internal functions */
 function resetState() {
     state = {
-        audioEnabled: false,
-        currentPhase: '',
-        trialsCompleted: 0
+        audio_enabled: false,
+        current_phase: '',
+        trials_completed: 0
     };
 }
 
 function playAudio(text: string) {
-    if (state.audioEnabled && 'speechSynthesis' in window) {
+    if (state.audio_enabled && 'speechSynthesis' in window) {
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.rate = 0.9;
         speechSynthesis.speak(utterance);
@@ -245,7 +245,7 @@ function createWelcome() {
                 </p>
                 <div class="audio-toggle">
                     <label>
-                        <input type="checkbox" id="audioToggle" onchange="window.tempAudioEnabled = this.checked">
+                        <input type="checkbox" id="audioToggle" onchange="window.tempaudio_enabled = this.checked">
                         Enable audio instructions
                     </label>
                 </div>
@@ -254,9 +254,9 @@ function createWelcome() {
         choices: ['Start'],
         data: { trial_type: 'welcome' },
         on_finish: function(data: any) {
-            state.audioEnabled = (window as any).tempAudioEnabled || false;
-            data.audio_enabled = state.audioEnabled;
-            delete (window as any).tempAudioEnabled;
+            state.audio_enabled = (window as any).tempaudio_enabled || false;
+            data.audio_enabled = state.audio_enabled;
+            delete (window as any).tempaudio_enabled;
         }
     };
     
