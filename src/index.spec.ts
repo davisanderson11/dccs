@@ -144,7 +144,7 @@ describe('Dimensional Change Card Sort', () => {
       const timeline = createTimeline(mockJsPsych, {
         practiceTrials: 3,
         testTrials: 4,
-        mixedTrials: 10,
+        mixed_trials: 10,
         showInstructions: false,
         showResults: false
       });
@@ -679,7 +679,7 @@ describe('Dimensional Change Card Sort', () => {
     });
 
     test('should handle zero mixed trials', () => {
-      const timeline = createTimeline(mockJsPsych, { mixedTrials: 0 });
+      const timeline = createTimeline(mockJsPsych, { mixed_trials: 0 });
       expect(timeline).toBeDefined();
       expect(Array.isArray(timeline)).toBe(true);
     });
@@ -688,7 +688,7 @@ describe('Dimensional Change Card Sort', () => {
       const timeline = createTimeline(mockJsPsych, { 
         practiceTrials: 0,
         testTrials: 0,
-        mixedTrials: 0,
+        mixed_trials: 0,
         showInstructions: false,
         showResults: false
       });

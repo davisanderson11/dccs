@@ -114,10 +114,10 @@ function playAudio(text: string) {
     }
 }
 
-function createTrialStimulus(target: Stimulus, left: Stimulus, right: Stimulus, cueWord: string) {
+function createTrialStimulus(target: Stimulus, left: Stimulus, right: Stimulus, cue_word: string) {
     return `
         <div class="dccs-trial-container">
-            <div class="dccs-cue">${cueWord}</div>
+            <div class="dccs-cue">${cue_word}</div>
             <div class="dccs-target-container">
                 <div class="dccs-target-card">
                     <img src="${target.img}" alt="${target.name}">
@@ -199,7 +199,7 @@ function setupTrial(
 }
 
 function generateMixedTrials(numTrials: number): Trial[] {
-    const mixedTrials: Trial[] = [];
+    const mixed_trials: Trial[] = [];
     const testStimuli = [STIMULI.blueBall, STIMULI.orangeTruck, STIMULI.blueTruck, STIMULI.orangeBall];
     
     for (let i = 0; i < numTrials; i++) {
@@ -218,7 +218,7 @@ function generateMixedTrials(numTrials: number): Trial[] {
             correct = choices[0].shape === target.shape ? 0 : 1;
         }
         
-        mixedTrials.push({
+        mixed_trials.push({
             target: target,
             left: choices[0],
             right: choices[1],
@@ -227,7 +227,7 @@ function generateMixedTrials(numTrials: number): Trial[] {
         });
     }
     
-    return mixedTrials;
+    return mixed_trials;
 }
 
 /* Timeline component generating functions */
@@ -470,15 +470,15 @@ function createResults(jsPsych: JsPsych) {
             const data = jsPsych.data.get().filter({task: 'dccs'});
             const colorTrials = data.filter({phase: 'color_test'});
             const shapeTrials = data.filter({phase: 'shape_test'});
-            const mixedTrials = data.filter({phase: 'mixed'});
+            const mixed_trials = data.filter({phase: 'mixed'});
             
             const colorAccuracy = colorTrials.filter({correct: true}).count() / colorTrials.count() * 100;
             const shapeAccuracy = shapeTrials.filter({correct: true}).count() / shapeTrials.count() * 100;
-            const mixedAccuracy = mixedTrials.filter({correct: true}).count() / mixedTrials.count() * 100;
+            const mixedAccuracy = mixed_trials.filter({correct: true}).count() / mixed_trials.count() * 100;
             
             const colorRT = colorTrials.filter({correct: true}).select('rt').mean() / 1000;
             const shapeRT = shapeTrials.filter({correct: true}).select('rt').mean() / 1000;
-            const mixedRT = mixedTrials.filter({correct: true}).select('rt').mean() / 1000;
+            const mixedRT = mixed_trials.filter({correct: true}).select('rt').mean() / 1000;
             
             return `
                 <div style="max-width: 600px; margin: auto;">
@@ -546,13 +546,13 @@ export function createTimeline(
     {
         practiceTrials = DEFAULT_PRACTICE_TRIALS,
         testTrials = DEFAULT_TEST_TRIALS,
-        mixedTrials = DEFAULT_MIXED_TRIALS,
+        mixed_trials = DEFAULT_MIXED_TRIALS,
         showInstructions = true,
         showResults = true
     }: {
         practiceTrials?: number,
         testTrials?: number,
-        mixedTrials?: number,
+        mixed_trials?: number,
         showInstructions?: boolean,
         showResults?: boolean
     } = {}
@@ -601,7 +601,7 @@ export function createTimeline(
     }
     
     // Generate and add mixed trials
-    const mixedTrialsList = generateMixedTrials(mixedTrials);
+    const mixedTrialsList = generateMixedTrials(mixed_trials);
     mixedTrialsList.forEach((trial, index) => {
         timeline.push(createTestTrial(jsPsych, trial, 'mixed', trial.dimension!, index));
     });
